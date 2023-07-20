@@ -24,12 +24,39 @@ namespace JwtWebApi.Controllers
 
         }
 
+
+        [HttpPost("Login")]
+
+        public async Task<ActionResult<string>> Login(UserDto request)
+        {
+            if(request.Username != user.UserName)
+            {
+                return BadRequest("Username not valid.");
+            }
+
+            if (!VerifyPasswordHash(request.Password))
+            {
+                return BadRequest("Wrong Password.");
+            }
+
+            return Ok("Crazy token works!!");
+        }
+
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }
+
+        private bool VerifyPasswordHash(string password)
+        {
+            using (var hmac = new HMACSHA512(user.PasswordSalt))
+            {
+                var computedPasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return computedPasswordHash.SequenceEqual(user.PasswordHash);
             }
         }
     }
