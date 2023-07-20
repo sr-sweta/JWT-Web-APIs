@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 
 namespace JwtWebApi.Controllers
@@ -9,9 +12,19 @@ namespace JwtWebApi.Controllers
     public class AuthController : ControllerBase
     {
         public static User user = new User();
+        private readonly IConfiguration _configuration;
+
+        // The IConfiguration interface need to be injected as dependency in the Controller and then later used throughout the Controller.
+        // The IConfiguration interface is used to read Settings and Connection Strings from AppSettings.json file.
+        public AuthController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         [HttpPost("register")]
-
+        // Salting is done to save the password as for same password to different form while storing in database
+        // so that it could be protected from hacking of accounts having same actual password.
+        // READ SALTING METHOD IN CRYTPOGRAPHY TO UNDERSTAND IT MORE.......
         public async Task<ActionResult<User>> Register(UserDto request)
         {
             CreatePasswordHash(request.Password, out byte[] passwordHash, out Byte[] passwordSalt);
@@ -29,7 +42,7 @@ namespace JwtWebApi.Controllers
 
         public async Task<ActionResult<string>> Login(UserDto request)
         {
-            if(request.Username != user.UserName)
+            if (request.Username != user.UserName)
             {
                 return BadRequest("Username not valid.");
             }
@@ -39,7 +52,31 @@ namespace JwtWebApi.Controllers
                 return BadRequest("Wrong Password.");
             }
 
-            return Ok("Crazy token works!!");
+            string token = CreateToken(user);
+
+            return Ok(token);
+        }
+
+        private string CreateToken(User user)
+        {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName)
+            };
+
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+                _configuration.GetSection("AppSettings:Token").Value));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds);
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return jwt;
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
@@ -59,5 +96,8 @@ namespace JwtWebApi.Controllers
                 return computedPasswordHash.SequenceEqual(user.PasswordHash);
             }
         }
+
+        
     }
 }
+

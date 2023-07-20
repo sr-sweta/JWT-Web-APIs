@@ -25,3 +25,8 @@ E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\obj\Debug\net6.0\JwtWebApi.dll
 E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\obj\Debug\net6.0\ref\JwtWebApi.dll
 E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\obj\Debug\net6.0\JwtWebApi.pdb
 E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\obj\Debug\net6.0\JwtWebApi.genruntimeconfig.cache
+E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
