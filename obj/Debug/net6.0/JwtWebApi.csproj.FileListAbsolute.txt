@@ -30,3 +30,11 @@ E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Microsoft.Ident
 E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
 E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
 E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Newtonsoft.Json.dll
+E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Scrutor.dll
+E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
+E:\Codes\C#\ASP.NET Web API\JWT.Token\JwtWebApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
