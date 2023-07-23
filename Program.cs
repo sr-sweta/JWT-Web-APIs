@@ -1,3 +1,4 @@
+global using JwtWebApi.Services.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -17,6 +18,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+// In a scoped service, with every HTTP request, we get a new instance.
+// However, within the same HTTP request, if the service is required in multiple places,
+// like in the view and in the controller, then the same instance is provided for the entire scope of that HTTP request.
+builder.Services.AddScoped<IUserService, UserService>();
+
+// HttpContextAccessor class is a component that provides access to the current HTTP request and response context.
+builder.Services.AddHttpContextAccessor();
 
 // Inside AddSwaggerGen whatever is written 
 // is to add the token to the header when used for authentication.

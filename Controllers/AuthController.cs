@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,13 +14,27 @@ namespace JwtWebApi.Controllers
     {
         public static User user = new User();
         private readonly IConfiguration _configuration;
+        private readonly IUserService _userService;
 
         // The IConfiguration interface need to be injected as dependency in the Controller and then later used throughout the Controller.
         // The IConfiguration interface is used to read Settings and Connection Strings from AppSettings.json file.
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, IUserService userService)
         {
             _configuration = configuration;
+            _userService = userService;
         }
+
+        [HttpGet, Authorize]
+
+        // This method return userName of the user. This has been accessed using UserService class.
+        // HttpContext has been used to get the access to the response of the user.
+        public ActionResult<string> GetMe()
+        {
+            var userName = _userService.GetMyName();
+
+            return Ok(userName);
+        }
+
 
         [HttpPost("register")]
         // Salting is done to save the password as for same password to different form while storing in database
