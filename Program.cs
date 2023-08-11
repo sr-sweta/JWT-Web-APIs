@@ -1,5 +1,7 @@
 global using JwtWebApi.Services.UserService;
+using JwtWebApi.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -43,12 +45,14 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
+builder.Services.AddDbContext<JwtWebApiDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("JwtWebApiConnectionString")));
 // This depedency has been injected for JWT authentication
 // What is the use of JWT bearer token?
 // JWT Bearer authentication is a way to secure an application by validating the authenticity of a JSON Web Token (JWT)
 // that is sent in the request header
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer( options =>
+    .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
@@ -56,7 +60,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
                         .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
         };
     });
 

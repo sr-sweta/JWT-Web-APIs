@@ -42,11 +42,13 @@ namespace JwtWebApi.Controllers
         // READ SALTING METHOD IN CRYTPOGRAPHY TO UNDERSTAND IT MORE.......
         public async Task<ActionResult<User>> Register(UserDto request)
         {
-            CreatePasswordHash(request.Password, out byte[] passwordHash, out Byte[] passwordSalt);
+            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             user.UserName = request.Username;
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
+
+            _userService.CreateUser(user);
 
             return Ok(user);
 
@@ -57,6 +59,8 @@ namespace JwtWebApi.Controllers
 
         public async Task<ActionResult<string>> Login(UserDto request)
         {
+            user = _userService.GetUser(request.Username);
+
             if (request.Username != user.UserName)
             {
                 return BadRequest("Username not valid.");
@@ -72,6 +76,7 @@ namespace JwtWebApi.Controllers
             RefreshToken refreshToken = GenerateRefreshToken();
             SetRefreshToken(refreshToken);
 
+            _userService.SetRefreshToken(user);
             return Ok(token);
         }
 
@@ -79,14 +84,14 @@ namespace JwtWebApi.Controllers
 
         public async Task<ActionResult<string>> RefreshToken()
         {
-            var refreshToken = Request.Cookies["refreshToken"];
+            var refreshToken = user.RefreshToken;
 
             if (!user.RefreshToken.Equals(refreshToken))
             {
                 return Unauthorized("Invalid Refresh Token!");
             }
 
-            else if(user.TokenExpires < DateTime.Now)
+            else if (user.TokenExpires < DateTime.Now)
             {
                 return Unauthorized("Token Expired.");
             }
@@ -95,6 +100,7 @@ namespace JwtWebApi.Controllers
             var newRefreshToken = GenerateRefreshToken(); ;
             SetRefreshToken(newRefreshToken);
 
+            _userService.SetRefreshToken(user);
             return Ok(token);
 
         }
@@ -105,7 +111,7 @@ namespace JwtWebApi.Controllers
             {
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
                 Created = DateTime.Now,
-                Expires = DateTime.Now.AddDays(7)
+                Expires = DateTime.Now.AddMinutes(5)
             };
 
             return refreshToken;
@@ -129,10 +135,10 @@ namespace JwtWebApi.Controllers
 
         private string CreateToken(User user)
         {
+            
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
-
                 // Below claim is to authorize admin to access the other information using JWT TOKEN
                 new Claim(ClaimTypes.Role, "Admin")
             };
@@ -144,7 +150,7 @@ namespace JwtWebApi.Controllers
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddMinutes(5),
                 signingCredentials: creds);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
@@ -170,7 +176,6 @@ namespace JwtWebApi.Controllers
             }
         }
 
-        
+
     }
 }
-
