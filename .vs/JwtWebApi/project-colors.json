@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "50d6adaf-4b4e-43dd-bf2e-ea3ce6ed0e43": {
+      "ProjectGuid": "50d6adaf-4b4e-43dd-bf2e-ea3ce6ed0e43",
+      "DisplayName": "JwtWebApi",
+      "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 1
+}

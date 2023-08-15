@@ -27,11 +27,8 @@ namespace JwtWebApi.Services.UserService
 
         User IUserService.CreateUser(User userData)
         {
-            //if(userData == null)
-            //{
-                _jwtWebApiDbContext.Users.Add(userData);
-                _jwtWebApiDbContext.SaveChanges();
-            //}            
+            _jwtWebApiDbContext.Users.Add(userData);
+            _jwtWebApiDbContext.SaveChanges();                      
 
             return userData;
         }

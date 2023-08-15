@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace JwtWebApi.Controllers
 {
@@ -16,6 +19,12 @@ namespace JwtWebApi.Controllers
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
 
+        //DI is a Software Pattern.
+        //DI basically provide the objects that an object needs, instead having it construct the objects themselves.like
+        // here, the UserService class object is directly not created. Rather costructor is used for DI.
+        //Dependency injection(DI) is done to have loose coupling between different classes
+        //DI is used through interfaces
+        //In DI, interface acts as injector and the class that implements that interface acts as service
         // The IConfiguration interface need to be injected as dependency in the Controller and then later used throughout the Controller.
         // The IConfiguration interface is used to read Settings and Connection Strings from AppSettings.json file.
         public AuthController(IConfiguration configuration, IUserService userService)
@@ -40,24 +49,53 @@ namespace JwtWebApi.Controllers
         // Salting is done to save the password as for same password to different form while storing in database
         // so that it could be protected from hacking of accounts having same actual password.
         // READ SALTING METHOD IN CRYTPOGRAPHY TO UNDERSTAND IT MORE.......
-        public async Task<ActionResult<User>> Register(UserDto request)
+        public async Task<ActionResult<string>> Register(UserDto request)
         {
+            if (user.Id > 0)
+            {
+                return BadRequest("User already registered.");
+            }
+
+            DateTime dt;
+            string formats = "yyyy-MM-dd" ;
+            if (!DateTime.TryParseExact(request.DOB.ToString("yyyy-MM-dd"), formats,
+                 System.Globalization.CultureInfo.InvariantCulture, DateTimeStyles.None, out dt))
+            {
+                return BadRequest("Please enter DOB correctly");
+            }
+            if (!IsPhoneNumber(request.PhNo)){
+                return BadRequest("Please enter Phone Number correctly");
+            }
+
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             user.UserName = request.Username;
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
+            user.DOB = request.DOB.ToString("yyyy-MM-dd");
+            user.PhNo = request.PhNo;
+            user.Street = request.Street;
+            user.City = request.City;
+            user.Country = request.Country;
+            user.State = request.State;
+
+            string token = CreateToken(user);
+
+            RefreshToken refreshToken = GenerateRefreshToken();
+            SetRefreshToken(refreshToken);
 
             _userService.CreateUser(user);
 
-            return Ok(user);
+            string rsp = "Id : " + user.Id + "\nUsername : " + user.UserName + "\nToken : " + token;
+
+            return Ok(rsp);
 
         }
 
 
         [HttpPost("Login")]
 
-        public async Task<ActionResult<string>> Login(UserDto request)
+        public async Task<ActionResult<string>> Login(UserLogin request)
         {
             user = _userService.GetUser(request.Username);
 
@@ -174,6 +212,11 @@ namespace JwtWebApi.Controllers
                 var computedPasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 return computedPasswordHash.SequenceEqual(user.PasswordHash);
             }
+        }
+
+        private bool IsPhoneNumber(string number)
+        {
+            return number.Length == 10;
         }
 
 

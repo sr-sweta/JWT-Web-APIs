@@ -9,6 +9,12 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+/*
+ CMD command to build amd run using
+-> dotnet build
+-> dotnet run
+ */
 /* 
  * REFER HERE TO KNOW HOW ITS DONE
  * https://www.youtube.com/watch?v=v7q3pEK1EA0&t=1697s

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Zzh2XFzlxhcvyADBER1Dh1fmR0Oossgqv8U80w10Uqd1R1QJSDdHR+yqVMzYSroJYkTpHIxnCBsLHtnJsII3BA==",
+  "dgSpecHash": "HpEzMduL8aRGyC7s4fINp1HYwI6Sabv6xkkp0GUBWKt2tG4AZizhgb4HaPxMNBkDdfrlH/TPQanobSOxNw7MnA==",
   "success": true,
   "projectFilePath": "E:\\Codes\\C#\\ASP.NET Web API\\JWT.Token\\JwtWebApi\\JwtWebApi.csproj",
   "expectedPackageFiles": [
@@ -40,6 +40,7 @@
     "C:\\Users\\GYAN\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.32.0\\microsoft.identitymodel.tokens.6.32.0.nupkg.sha512",
     "C:\\Users\\GYAN\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\GYAN\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
+    "C:\\Users\\GYAN\\.nuget\\packages\\microsoft.odata.edm\\7.17.0\\microsoft.odata.edm.7.17.0.nupkg.sha512",
     "C:\\Users\\GYAN\\.nuget\\packages\\microsoft.openapi\\1.3.1\\microsoft.openapi.1.3.1.nupkg.sha512",
     "C:\\Users\\GYAN\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "C:\\Users\\GYAN\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",

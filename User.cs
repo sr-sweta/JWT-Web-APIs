@@ -15,6 +15,18 @@ namespace JwtWebApi
 
         public byte[] PasswordSalt { get; set; }
 
+        public string DOB { get; set; } = string.Empty;
+
+        public string PhNo { get; set; } = string.Empty;
+
+        public string? Street { get; set; } = string.Empty;
+
+        public string? City { get; set; } = string.Empty;
+
+        public string State { get; set; } = string.Empty;
+
+        public string Country { get; set; } = string.Empty;
+        
         public string RefreshToken { get; set; } =String.Empty;
 
         public DateTime TokenCreated { get; set; }

@@ -515,6 +515,20 @@
           "lib/netstandard1.0/_._": {}
         }
       },
+      "Microsoft.OData.Edm/7.17.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "4.6.0",
+          "System.Text.Encodings.Web": "4.7.2",
+          "System.Text.Json": "4.6.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.OData.Edm.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.OData.Edm.dll": {}
+        }
+      },
       "Microsoft.OpenApi/1.3.1": {
         "type": "package",
         "compile": {
@@ -1993,6 +2007,23 @@
         "microsoft.netcore.targets.1.1.0.nupkg.sha512",
         "microsoft.netcore.targets.nuspec",
         "runtime.json"
+      ]
+    },
+    "Microsoft.OData.Edm/7.17.0": {
+      "sha512": "E2S2Z1YK6LvEl1muUv5dCHDaaCHZ7JsM7cvmBFWA4hknm4+Iniz2rW+UjvNOOKUlvEXA337/DyLvFfdNAT7rcg==",
+      "type": "package",
+      "path": "microsoft.odata.edm/7.17.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net45/Microsoft.OData.Edm.dll",
+        "lib/net45/Microsoft.OData.Edm.xml",
+        "lib/netstandard1.1/Microsoft.OData.Edm.dll",
+        "lib/netstandard1.1/Microsoft.OData.Edm.xml",
+        "lib/netstandard2.0/Microsoft.OData.Edm.dll",
+        "lib/netstandard2.0/Microsoft.OData.Edm.xml",
+        "microsoft.odata.edm.7.17.0.nupkg.sha512",
+        "microsoft.odata.edm.nuspec"
       ]
     },
     "Microsoft.OpenApi/1.3.1": {
@@ -3623,6 +3654,7 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.9",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.9",
       "Microsoft.IdentityModel.Tokens >= 6.32.0",
+      "Microsoft.OData.Edm >= 7.17.0",
       "Swashbuckle.AspNetCore >= 6.2.3",
       "Swashbuckle.AspNetCore.Filters >= 7.0.8",
       "System.IdentityModel.Tokens.Jwt >= 6.32.0"
@@ -3688,6 +3720,10 @@
           "Microsoft.IdentityModel.Tokens": {
             "target": "Package",
             "version": "[6.32.0, )"
+          },
+          "Microsoft.OData.Edm": {
+            "target": "Package",
+            "version": "[7.17.0, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",
