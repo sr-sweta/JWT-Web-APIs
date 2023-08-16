@@ -216,7 +216,8 @@ namespace JwtWebApi.Controllers
 
         private bool IsPhoneNumber(string number)
         {
-            return number.Length == 10;
+            Regex reg = new Regex(@"^\d{10}$");
+            return reg.IsMatch(number);
         }
 
 
