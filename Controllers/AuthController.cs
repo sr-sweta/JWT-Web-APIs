@@ -51,19 +51,30 @@ namespace JwtWebApi.Controllers
         // READ SALTING METHOD IN CRYTPOGRAPHY TO UNDERSTAND IT MORE.......
         public async Task<ActionResult<string>> Register(UserDto request)
         {
+            /*
+            Console.WriteLine("AuthController request OBJECT DATA\n------------------------------------------------------\n");
+            Console.WriteLine("Username : " + request.Username);
+            Console.WriteLine("Password : " + request.Password);
+            Console.WriteLine("DOB : " + request.DOB);
+            Console.WriteLine("PhNo : " + request.PhNo);
+            Console.WriteLine("Street : " + request.Street);
+            Console.WriteLine("City : " + request.City);
+            Console.WriteLine("Country : " + request.Country);
+            Console.WriteLine("State : " + request.State);
+            */
+
+
             if (user.Id > 0)
             {
                 return BadRequest("User already registered.");
             }
 
-            DateTime dt;
-            string formats = "yyyy-MM-dd" ;
-            if (!DateTime.TryParseExact(request.DOB.ToString("yyyy-MM-dd"), formats,
-                 System.Globalization.CultureInfo.InvariantCulture, DateTimeStyles.None, out dt))
+            if (!VerifyDOB(request.DOB))
             {
                 return BadRequest("Please enter DOB correctly");
             }
-            if (!IsPhoneNumber(request.PhNo)){
+
+            if (!VerifyPhoneNumber(request.PhNo)){
                 return BadRequest("Please enter Phone Number correctly");
             }
 
@@ -83,6 +94,19 @@ namespace JwtWebApi.Controllers
 
             RefreshToken refreshToken = GenerateRefreshToken();
             SetRefreshToken(refreshToken);
+
+            /*
+            Console.WriteLine("AuthController user OBJECT DATA\n------------------------------------------------------\n");
+            Console.WriteLine("Username : " + user.UserName);
+            Console.WriteLine("PasswordHash : " + user.PasswordHash);
+            Console.WriteLine("PasswordSalt : " + user.PasswordSalt);
+            Console.WriteLine("DOB : " + user.DOB);
+            Console.WriteLine("PhNo : " + user.PhNo);
+            Console.WriteLine("Street : " + user.Street);
+            Console.WriteLine("City : " + user.City);
+            Console.WriteLine("Country : " + user.Country);
+            Console.WriteLine("State : " + user.State);
+            */
 
             _userService.CreateUser(user);
 
@@ -214,12 +238,27 @@ namespace JwtWebApi.Controllers
             }
         }
 
-        private bool IsPhoneNumber(string number)
+        private bool VerifyPhoneNumber(string number)
         {
             Regex reg = new Regex(@"^\d{10}$");
             return reg.IsMatch(number);
         }
 
+        private bool VerifyDOB(DateTime date)
+        {
+            DateTime dt;
+            string formats = "yyyy-MM-dd";
 
+            // Check format of date entered or
+            // check if date is entered or not. If entered date is today's date or if date is not entered then false is returned.
+            if (DateTime.TryParseExact(date.ToString("yyyy-MM-dd"), formats,
+                 System.Globalization.CultureInfo.InvariantCulture, DateTimeStyles.None, out dt) || date == DateTime.Now)
+            {
+                return false;
+            }
+
+
+            return true;
+        }
     }
 }

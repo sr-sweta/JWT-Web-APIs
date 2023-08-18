@@ -27,6 +27,17 @@ namespace JwtWebApi.Services.UserService
 
         User IUserService.CreateUser(User userData)
         {
+            Console.WriteLine("UserService userData OBJECT DATA\n------------------------------------------------------\n");
+            Console.WriteLine("Username : " + userData.UserName);
+            Console.WriteLine("PasswordHash : " + userData.PasswordHash);
+            Console.WriteLine("PasswordSalt : " + userData.PasswordSalt);
+            Console.WriteLine("DOB : " + userData.DOB);
+            Console.WriteLine("PhNo : " + userData.PhNo);
+            Console.WriteLine("Street : " + userData.Street);
+            Console.WriteLine("City : " + userData.City);
+            Console.WriteLine("Country : " + userData.Country);
+            Console.WriteLine("State : " + userData.State);
+
             _jwtWebApiDbContext.Users.Add(userData);
             _jwtWebApiDbContext.SaveChanges();                      
 

@@ -56,6 +56,14 @@ namespace JwtWebApi.Controllers
                     RegionImageUrl = regionDomain.RegionImageUrl
                 });
             }
+
+            foreach (var regionDto in regionsDto)
+            {
+                Console.WriteLine(regionDto.Id);
+                Console.WriteLine(regionDto.Name);
+                Console.WriteLine(regionDto.Code);
+                Console.WriteLine(regionDto.RegionImageUrl);
+            }
             
 
             return Ok(regionsDto);
