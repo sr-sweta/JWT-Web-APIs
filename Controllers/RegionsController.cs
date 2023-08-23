@@ -14,13 +14,13 @@ namespace JwtWebApi.Controllers
     public class RegionsController : ControllerBase
     {
         User user = null;
-        private readonly JwtWebApiDbContext dbContext;
+        private readonly IUserService userService;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IRegionService regionService;
 
-        public RegionsController(JwtWebApiDbContext dbContext, IHttpContextAccessor httpContextAccessor, IRegionService regionService)
+        public RegionsController(IUserService userService, IHttpContextAccessor httpContextAccessor, IRegionService regionService)
         {
-            this.dbContext = dbContext;
+            this.userService = userService;
             this.httpContextAccessor = httpContextAccessor;
             this.regionService = regionService;
         }
@@ -164,11 +164,11 @@ namespace JwtWebApi.Controllers
 
         private User GetUser()
         {
-            var result = string.Empty;
+            string username = string.Empty;
             if (httpContextAccessor.HttpContext != null)
             {
-                result = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
-                user = dbContext.Users.FirstOrDefault(acc => acc.UserName == result);
+                username = httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+                user = userService.GetUser(username);
             }
                  
             return user;
