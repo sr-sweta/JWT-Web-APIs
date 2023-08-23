@@ -16,11 +16,13 @@ namespace JwtWebApi.Controllers
         User user = null;
         private readonly JwtWebApiDbContext dbContext;
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IRegionService regionService;
 
-        public RegionsController(JwtWebApiDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+        public RegionsController(JwtWebApiDbContext dbContext, IHttpContextAccessor httpContextAccessor, IRegionService regionService)
         {
             this.dbContext = dbContext;
             this.httpContextAccessor = httpContextAccessor;
+            this.regionService = regionService;
         }
         
 
@@ -42,29 +44,7 @@ namespace JwtWebApi.Controllers
                 return Unauthorized("Token Expired.");
             }
 
-            var regionsDomain = dbContext.Regions.ToList();
-            var regionsDto = new List<RegionDTO>();
-
-            
-            foreach (var regionDomain in regionsDomain)
-            {
-                regionsDto.Add(new RegionDTO()
-                {
-                    Id = regionDomain.Id,
-                    Name = regionDomain.Name,
-                    Code = regionDomain.Code,
-                    RegionImageUrl = regionDomain.RegionImageUrl
-                });
-            }
-
-            foreach (var regionDto in regionsDto)
-            {
-                Console.WriteLine(regionDto.Id);
-                Console.WriteLine(regionDto.Name);
-                Console.WriteLine(regionDto.Code);
-                Console.WriteLine(regionDto.RegionImageUrl);
-            }
-            
+            var regionsDto = regionService.GetAll();
 
             return Ok(regionsDto);
         }
@@ -87,23 +67,14 @@ namespace JwtWebApi.Controllers
             {
                 return Unauthorized("Token Expired.");
             }
+           
+            var regionDto = regionService.GetById(id);
 
-            var regionDomain = dbContext.Regions.Find(id);
-
-
-            if (regionDomain == null)
+            if (regionDto == null)
             {
                 return NotFound();
             }
-           
-            var regionDto = new RegionDTO()
-            {
-                Id = regionDomain.Id,
-                Name = regionDomain.Name,
-                Code = regionDomain.Code,
-                RegionImageUrl = regionDomain.RegionImageUrl
-            };
- 
+
             return Ok(regionDto);
         }
         
@@ -126,24 +97,7 @@ namespace JwtWebApi.Controllers
                 return Unauthorized("Token Expired.");
             }
 
-            var regionDomainModel = new Region()
-            {
-                Name = addRegionRequestDTO.Name,
-                Code = addRegionRequestDTO.Code,
-                RegionImageUrl = addRegionRequestDTO.RegionImageUrl
-            };
-
-            dbContext.Regions.Add(regionDomainModel);
-            dbContext.SaveChanges();
-
-            var regionDto = new RegionDTO()
-            {
-                Id = regionDomainModel.Id,
-                Name = regionDomainModel.Name,
-                Code = regionDomainModel.Code,
-                RegionImageUrl = regionDomainModel.RegionImageUrl
-
-            };
+            var regionDto = regionService.CreateRegion(addRegionRequestDTO);
 
             return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
         }
@@ -168,21 +122,14 @@ namespace JwtWebApi.Controllers
                 return Unauthorized("Token Expired.");
             }
 
-            var regionDomain = dbContext.Regions.Find(id);
+            var region = regionService.UpdateRegion(id, updateRegion);
 
-            if (regionDomain == null)
+            if (region == null)
             {
                 return NotFound();
             }
 
-            regionDomain.Name = updateRegion.Name;
-            regionDomain.Code = updateRegion.Code;
-            regionDomain.RegionImageUrl = updateRegion.RegionImageUrl;
-
-            dbContext.Regions.Update(regionDomain);
-            dbContext.SaveChanges();
-
-            return Ok(updateRegion);
+            return Ok(region);
         }
 
         [HttpDelete]
@@ -204,15 +151,12 @@ namespace JwtWebApi.Controllers
                 return Unauthorized("Token Expired.");
             }
 
-            var regionDomain = dbContext.Regions.Find(id);
+            var result = regionService.DeleteRegion(id);
 
-            if (regionDomain == null)
+            if (result == false)
             {
                 return NotFound();
             }
-
-            dbContext.Regions.Remove(regionDomain);
-            dbContext.SaveChanges();
 
             return Ok();
         }

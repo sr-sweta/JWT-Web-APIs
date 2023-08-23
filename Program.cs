@@ -1,4 +1,5 @@
 global using JwtWebApi.Services.UserService;
+global using JwtWebApi.Services.RegionService;
 using JwtWebApi.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ builder.Services.AddEndpointsApiExplorer();
 // However, within the same HTTP request, if the service is required in multiple places,
 // like in the view and in the controller, then the same instance is provided for the entire scope of that HTTP request.
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRegionService, RegionService>();
 
 // HttpContextAccessor class is a component that provides access to the current HTTP request and response context.
 builder.Services.AddHttpContextAccessor();
